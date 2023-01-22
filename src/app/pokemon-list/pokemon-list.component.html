@@ -1,0 +1,236 @@
+<div class="container">
+  <div
+    class="row text-center align-items-centerjustify-content-center p-5 cartabusqueda"
+  >
+    <div class="col-lg card searchcard" style="width: 500px">
+      <div class="row no-gutters">
+        <div class="col-sm-5">
+          <img
+            *ngIf="pokemonByName"
+            class="card-img p-3"
+            [src]="pokemonByName.sprites.other.home.front_default"
+          />
+        </div>
+        <div class="col-sm-7 d-flex align-items-center">
+          <div class="card-body">
+            <div class="d-flex justify-content-start">
+              <h2 *ngIf="pokemonByName" class="card-title">
+                Name:
+                {{
+                  pokemonByName.name.charAt(0).toUpperCase() +
+                    pokemonByName.name.slice(1)
+                }}
+              </h2>
+            </div>
+            <div class="d-flex justify-content-start">
+              <h2 *ngIf="pokemonByName" class="card-text">
+                Type:
+                {{
+                  pokemonByName.types[0].type.name.charAt(0).toUpperCase() +
+                    pokemonByName.types[0].type.name.slice(1)
+                }}
+              </h2>
+            </div>
+          </div>
+        </div>
+        <canvasjs-chart [options]="chartByName"></canvasjs-chart>
+      </div>
+    </div>
+    <div class="row col-lg d-flex justify-content-center barrabusqueda">
+      <div class="col-lg align-items-start">
+        <form>
+          <h3 class="text-secondary">
+            ¡Ingresa el nombre del pokémon que deseas buscar!
+          </h3>
+          <div class="form-outline mb-4">
+            <input
+              style="width: 100%"
+              type="text"
+              [(ngModel)]="selectedPokemon"
+              matInput
+              [formControl]="myControl"
+              [matAutocomplete]="auto"
+              placeholder="Charmander"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="AutoCompleteDisplay"
+            >
+              <mat-option
+                (click)="getPokemonByName(selectedPokemon)"
+                *ngFor="let poke of filteredOptions | async"
+                [value]="poke"
+              >
+                {{ poke.charAt(0).toUpperCase() + poke.slice(1) }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </form>
+        <div class="d-flex justify-content-end">
+          <img
+            src="../../assets/dficsow-2131e3c3-7e4d-4629-b4c3-3f5b42798343.png"
+            alt=""
+            class="w-50"
+            style="transform: scaleX(-1); -webkit-transform: scaleX(-1)"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-5">
+  <div class="col-lg py-5 w-75">
+    <div class="d-flex justify-content-center pt-5">
+      <div style="width: 90%" class="tabladatos">
+        <table
+          class="tabla-datos table table-bordered table-striped table-hover align-middle mb-3 bg-white"
+        >
+          <thead class="bg-light">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">ID</th>
+              <th scope="col">Type</th>
+              <th scope="col">Height</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody
+            *ngFor="
+              let poke of pokemons
+                | paginate
+                  : {
+                      itemsPerPage: 10,
+                      currentPage: page,
+                      totalItems: totalPokemons
+                    }
+            "
+          >
+            <tr class="">
+              <td>
+                <div class="d-flex align-items-center p-2">
+                  <img
+                    *ngIf="poke"
+                    [src]="poke.sprites.other.home.front_default"
+                    alt=""
+                    style="width: 45px; height: 45px"
+                    class="rounded-circle"
+                  />
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">
+                      {{
+                        poke.name.charAt(0).toUpperCase() + poke.name.slice(1)
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="fw-normal mb-1">{{ poke.id }}</p>
+              </td>
+              <td>
+                {{
+                  poke.types[0].type.name.charAt(0).toUpperCase() +
+                    poke.types[0].type.name.slice(1)
+                }}
+              </td>
+              <td>{{ poke.height }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary btn-sm"
+                  (click)="seeMore(poke.name)"
+                >
+                  See more
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <pagination-controls
+      (pageChange)="page = $event; pokemons = []; getPokemons()"
+    ></pagination-controls>
+  </div>
+  <div class="col-lg d-flex align-items-center justify-content-center py-5">
+    <div class="tarjeta">
+      <div class="card">
+        <img
+          *ngIf="pokemon"
+          [src]="pokemon.sprites.other.home.front_default"
+          class="card-img-top"
+          alt="Default pokemon"
+        />
+        <div class="card-body d-flex justify-content-center">
+          <h2 class="card-text">
+            {{ pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) }}
+            -&nbsp;
+          </h2>
+          <h2 class="card-text">
+            {{
+              pokemon.types[0].type.name.charAt(0).toUpperCase() +
+                pokemon.types[0].type.name.slice(1)
+            }}
+          </h2>
+        </div>
+        <div>
+          <canvasjs-chart [options]="chart"></canvasjs-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center m-5">
+  <h1 style="font-size: 36px">Contémos el alfabeto Pokémon</h1>
+</div>
+<div>
+  <div class="d-flex justify-content-center tabla-alfabeto">
+    <div style="width: 70%">
+      <table
+        class="table table-bordered table-striped table-hover align-middle mb-5 bg-white"
+      >
+        <thead class="bg-light">
+          <tr>
+            <th scope="col">Letter</th>
+            <th scope="col">Count</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let pokeCount of sortedMap | keyvalue">
+          <tr class="">
+            <td>
+              <div class="d-flex align-items-center p-2">
+                <div class="ms-3">
+                  <p class="fw-bold mb-1">
+                    {{ pokeCount.key }}
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td>
+              {{ pokeCount.value }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row text-center">
+  <div class="col-lg imagen1">
+    <img
+      src="../../assets/imagen-1.jpg"
+      class="pb-4"
+      alt=""
+      style="width: 25%"
+    />
+  </div>
+  <div class="col-lg imagen2">
+    <img
+      src="../../assets/imagen-2.jpg"
+      class="pt-4"
+      alt=""
+      style="width: 35%"
+    />
+  </div>
+</div>
