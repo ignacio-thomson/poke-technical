@@ -40,6 +40,14 @@ pagination-controls {
   transform: scale(1.25);
 }
 
+.carta-zoom {
+  transition: transform 0.2s;
+}
+
+.carta-zoom:hover {
+  transform: scale(1.25);
+}
+
 .barrabusqueda {
   padding: 3rem;
 }
@@ -48,15 +56,24 @@ pagination-controls {
   .barrabusqueda {
     padding: 0;
   }
-  .searchcard {
-    margin-bottom: 7rem;
-    margin-left: -1rem;
-  }
   .tarjeta {
     width: 75%;
   }
   .cartabusqueda {
     margin-left: 1.25rem;
+  }
+  .searchcard {
+    transition: none;
+  }
+  .searchcard:hover {
+    transform: none;
+  }
+  .carta-zoom {
+    transition: none;
+  }
+
+  .carta-zoom:hover {
+    transform: none;
   }
   input {
     width: 100%;
@@ -114,13 +131,6 @@ input {
 
 table {
   margin-top: 5rem;
-}
-.carta-zoom {
-  transition: transform 0.2s;
-}
-
-.carta-zoom:hover {
-  transform: scale(1.25);
 }
 
 .mat-table {

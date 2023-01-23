@@ -1,7 +1,46 @@
 <div class="container">
   <div
-    class="row text-center align-items-center justify-content-center p-5 cartabusqueda"
+    class="row text-center align-items-center justify-content-center p-5 m-0"
   >
+    <div class="row col-lg d-flex justify-content-center p-5 mb-5">
+      <div class="col-lg align-items-start">
+        <form>
+          <h3 class="text-secondary">
+            ¡Input the Pokémon name you wish to search!
+          </h3>
+          <div class="form-outline mb-4">
+            <input
+              type="text"
+              [(ngModel)]="selectedPokemon"
+              matInput
+              [formControl]="myControl"
+              [matAutocomplete]="auto"
+              placeholder="E.g. Pikachu, Houndoom, Groudon"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="AutoCompleteDisplay"
+            >
+              <mat-option
+                (click)="getPokemonByName(selectedPokemon)"
+                *ngFor="let poke of filteredOptions | async"
+                [value]="poke"
+              >
+                {{ poke.charAt(0).toUpperCase() + poke.slice(1) }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </form>
+        <div class="d-flex justify-content-center">
+          <img
+            src="../../assets/img/Team_Rocket_(serie_original).webp"
+            alt=""
+            class="w-100"
+            style="transform: scaleX(-1); -webkit-transform: scaleX(-1)"
+          />
+        </div>
+      </div>
+    </div>
     <div class="col-lg card searchcard" style="width: 500px">
       <div class="row no-gutters">
         <div class="col-sm-5">
@@ -64,51 +103,15 @@
         <canvasjs-chart [options]="chartByName"></canvasjs-chart>
       </div>
     </div>
-    <div class="row col-lg d-flex justify-content-center barrabusqueda">
-      <div class="col-lg align-items-start">
-        <form>
-          <h3 class="text-secondary">
-            ¡Input the Pokémon name you wish to search!
-          </h3>
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              [(ngModel)]="selectedPokemon"
-              matInput
-              [formControl]="myControl"
-              [matAutocomplete]="auto"
-              placeholder="E.g. Pikachu, Houndoom, Groudon"
-            />
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              [displayWith]="AutoCompleteDisplay"
-            >
-              <mat-option
-                (click)="getPokemonByName(selectedPokemon)"
-                *ngFor="let poke of filteredOptions | async"
-                [value]="poke"
-              >
-                {{ poke.charAt(0).toUpperCase() + poke.slice(1) }}
-              </mat-option>
-            </mat-autocomplete>
-          </div>
-        </form>
-        <div class="d-flex justify-content-center">
-          <img
-            src="../../assets/img/Team_Rocket_(serie_original).webp"
-            alt=""
-            class="w-100"
-            style="transform: scaleX(-1); -webkit-transform: scaleX(-1)"
-          />
-        </div>
-      </div>
-    </div>
   </div>
 </div>
-
+<hr class="hr hr-blurry" />
+<div class="text-center pt-5">
+  <h1 style="font-size: 36px">¡Here you can find the +1000 pokemons!</h1>
+</div>
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg p-2">
+    <div class="col-lg">
       <table class="w-100" mat-table matSort [dataSource]="dataSource">
         <ng-container matColumnDef="sprite">
           <th mat-header-cell *matHeaderCellDef>Sprite</th>
@@ -204,6 +207,7 @@
     </div>
   </div>
 </div>
+<hr class="hr hr-blurry" />
 <div class="text-center pt-5">
   <h1 style="font-size: 36px">Let's count the Pokémon alphabet</h1>
 </div>
