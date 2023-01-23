@@ -1,20 +1,20 @@
 <div class="container">
   <div
-    class="row text-center align-items-centerjustify-content-center p-5 cartabusqueda"
+    class="row text-center align-items-center justify-content-center p-5 cartabusqueda"
   >
     <div class="col-lg card searchcard" style="width: 500px">
       <div class="row no-gutters">
         <div class="col-sm-5">
           <img
             *ngIf="pokemonByName"
-            class="card-img p-3"
+            class="card-img pt-5"
             [src]="pokemonByName.sprites.other.home.front_default"
           />
         </div>
-        <div class="col-sm-7 d-flex align-items-center">
-          <div class="card-body">
+        <div class="col-sm-7 d-flex align-items-center p-5">
+          <div class="card-body align-items-center">
             <div class="d-flex justify-content-start">
-              <h2 *ngIf="pokemonByName" class="card-title">
+              <h2 *ngIf="pokemonByName" class="card-text mb-2">
                 Name:
                 {{
                   pokemonByName.name.charAt(0).toUpperCase() +
@@ -23,13 +23,41 @@
               </h2>
             </div>
             <div class="d-flex justify-content-start">
-              <h2 *ngIf="pokemonByName" class="card-text">
+              <h2 *ngIf="pokemonByName" class="card-text mb-2">
                 Type:
                 {{
                   pokemonByName.types[0].type.name.charAt(0).toUpperCase() +
                     pokemonByName.types[0].type.name.slice(1)
                 }}
               </h2>
+            </div>
+            <div class="d-flex justify-content-start">
+              <h2 *ngIf="pokemonByName" class="card-text mb-2">
+                ID:
+                {{ pokemonByName.id }}
+              </h2>
+            </div>
+            <div
+              class="d-flex justify-content-start"
+              style="margin-bottom: 5rem"
+            >
+              <a
+                *ngIf="pokemonByName"
+                href="https://pokemon.fandom.com/es/wiki/{{
+                  pokemonByName.name.charAt(0).toUpperCase() +
+                    pokemonByName.name.slice(1)
+                }}"
+                target="_blank"
+                class="text-light"
+                style="text-decoration: none"
+                ><button
+                  class="btn btn-danger btn-md text-light"
+                  type="button"
+                  *ngIf="pokemonByName"
+                >
+                  Check the wiki
+                </button></a
+              >
             </div>
           </div>
         </div>
@@ -40,17 +68,16 @@
       <div class="col-lg align-items-start">
         <form>
           <h3 class="text-secondary">
-            ¡Ingresa el nombre del pokémon que deseas buscar!
+            ¡Input the Pokémon name you wish to search!
           </h3>
           <div class="form-outline mb-4">
             <input
-              style="width: 100%"
               type="text"
               [(ngModel)]="selectedPokemon"
               matInput
               [formControl]="myControl"
               [matAutocomplete]="auto"
-              placeholder="Charmander"
+              placeholder="E.g. Pikachu, Houndoom, Groudon"
             />
             <mat-autocomplete
               #auto="matAutocomplete"
@@ -66,11 +93,11 @@
             </mat-autocomplete>
           </div>
         </form>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-center">
           <img
-            src="../../assets/dficsow-2131e3c3-7e4d-4629-b4c3-3f5b42798343.png"
+            src="../../assets/img/Team_Rocket_(serie_original).webp"
             alt=""
-            class="w-50"
+            class="w-100"
             style="transform: scaleX(-1); -webkit-transform: scaleX(-1)"
           />
         </div>
@@ -79,110 +106,106 @@
   </div>
 </div>
 
-<div class="row mb-5">
-  <div class="col-lg py-5 w-75">
-    <div class="d-flex justify-content-center pt-5">
-      <div style="width: 90%" class="tabladatos">
-        <table
-          class="tabla-datos table table-bordered table-striped table-hover align-middle mb-3 bg-white"
-        >
-          <thead class="bg-light">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">ID</th>
-              <th scope="col">Type</th>
-              <th scope="col">Height</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody
-            *ngFor="
-              let poke of pokemons
-                | paginate
-                  : {
-                      itemsPerPage: 10,
-                      currentPage: page,
-                      totalItems: totalPokemons
-                    }
-            "
-          >
-            <tr class="">
-              <td>
-                <div class="d-flex align-items-center p-2">
-                  <img
-                    *ngIf="poke"
-                    [src]="poke.sprites.other.home.front_default"
-                    alt=""
-                    style="width: 45px; height: 45px"
-                    class="rounded-circle"
-                  />
-                  <div class="ms-3">
-                    <p class="fw-bold mb-1">
-                      {{
-                        poke.name.charAt(0).toUpperCase() + poke.name.slice(1)
-                      }}
-                    </p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p class="fw-normal mb-1">{{ poke.id }}</p>
-              </td>
-              <td>
-                {{
-                  poke.types[0].type.name.charAt(0).toUpperCase() +
-                    poke.types[0].type.name.slice(1)
-                }}
-              </td>
-              <td>{{ poke.height }}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary btn-sm"
-                  (click)="seeMore(poke.name)"
-                >
-                  See more
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg p-2">
+      <table class="w-100" mat-table matSort [dataSource]="dataSource">
+        <ng-container matColumnDef="sprite">
+          <th mat-header-cell *matHeaderCellDef>Sprite</th>
+          <td mat-cell *matCellDef="let row">
+            <img [src]="row.sprite" alt="" style="width: 35%" />
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+          <td mat-cell *matCellDef="let row">{{ row.type }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="
+                seeMore(row.name.charAt(0).toLowerCase() + row.name.slice(1))
+              "
+            >
+              Details
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[13, 23, 35]"
+        aria-labels="select page of pokemons"
+      ></mat-paginator>
     </div>
-    <pagination-controls
-      (pageChange)="page = $event; pokemons = []; getPokemons()"
-    ></pagination-controls>
-  </div>
-  <div class="col-lg d-flex align-items-center justify-content-center py-5">
-    <div class="tarjeta">
-      <div class="card">
-        <img
-          *ngIf="pokemon"
-          [src]="pokemon.sprites.other.home.front_default"
-          class="card-img-top"
-          alt="Default pokemon"
-        />
-        <div class="card-body d-flex justify-content-center">
-          <h2 class="card-text">
-            {{ pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) }}
-            -&nbsp;
-          </h2>
-          <h2 class="card-text">
-            {{
-              pokemon.types[0].type.name.charAt(0).toUpperCase() +
-                pokemon.types[0].type.name.slice(1)
-            }}
-          </h2>
-        </div>
-        <div>
-          <canvasjs-chart [options]="chart"></canvasjs-chart>
+    <div class="col-lg py-5">
+      <div class="tarjeta m-auto">
+        <div class="card carta-zoom">
+          <img
+            *ngIf="pokemon"
+            [src]="pokemon.sprites.other.home.front_default"
+            class="card-img-top"
+            alt="Default pokemon"
+          />
+          <div
+            *ngIf="pokemon"
+            class="card-body d-flex justify-content-center align-items-center"
+          >
+            <h2 class="card-text m-0">
+              Name:
+              {{ pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) }}
+              -&nbsp;
+            </h2>
+            <h2 class="card-text">
+              Type:
+              {{
+                pokemon.types[0].type.name.charAt(0).toUpperCase() +
+                  pokemon.types[0].type.name.slice(1)
+              }}
+            </h2>
+          </div>
+          <div class="d-flex justify-content-center mb-3">
+            <div>
+              <a
+                *ngIf="pokemon"
+                href="https://pokemon.fandom.com/es/wiki/{{
+                  pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
+                }}"
+                target="_blank"
+                class="text-light"
+                style="text-decoration: none"
+                ><button
+                  class="btn btn-danger btn-md text-light"
+                  type="button"
+                  *ngIf="pokemonByName"
+                >
+                  Check the wiki
+                </button></a
+              >
+            </div>
+          </div>
+          <div>
+            <canvasjs-chart [options]="chart"></canvasjs-chart>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="text-center m-5">
-  <h1 style="font-size: 36px">Contémos el alfabeto Pokémon</h1>
+<div class="text-center pt-5">
+  <h1 style="font-size: 36px">Let's count the Pokémon alphabet</h1>
 </div>
 <div>
   <div class="d-flex justify-content-center tabla-alfabeto">
@@ -217,20 +240,10 @@
   </div>
 </div>
 <div class="row text-center">
-  <div class="col-lg imagen1">
-    <img
-      src="../../assets/imagen-1.jpg"
-      class="pb-4"
-      alt=""
-      style="width: 25%"
-    />
+  <div class="col-lg contenedor-imagen1">
+    <img src="../../assets/img/imagen-1.jpg" class="avatar1" alt="" />
   </div>
-  <div class="col-lg imagen2">
-    <img
-      src="../../assets/imagen-2.jpg"
-      class="pt-4"
-      alt=""
-      style="width: 35%"
-    />
+  <div class="col-lg contenedor-imagen2">
+    <img src="../../assets/img/imagen-2.jpg" class="avatar2" alt="" />
   </div>
 </div>

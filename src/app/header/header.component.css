@@ -24,37 +24,13 @@ p {
   font-family: "Rubik", sans-serif;
 }
 
-.textoheadermedio {
-  width: 50%;
-}
-
-@media screen and (max-width: 1024px) {
-  .textoheadermedio {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .textoheader {
-    text-align: center;
-  }
-  h1 {
-    font-size: 48px;
-  }
-}
-
-.tituloheader {
-  text-align: end;
-}
-
-@media screen and (max-width: 1024px) {
-  .tituloheader {
-    text-align: center;
-  }
+.imgheader {
+  width: 15%;
 }
 
 @media screen and (max-width: 1024px) {
   .imgheader {
     margin-left: 1rem;
+    width: 25%;
   }
 }

@@ -28,37 +28,16 @@ pagination-controls {
   text-align: center;
 }
 
-.tabladatos {
-  margin-left: 15rem;
-}
-
-@media screen and (max-width: 1024px) {
-  .tabladatos {
-    margin-left: 1.5rem;
-  }
-}
-
 .tarjeta {
-  margin-right: 15rem;
-  width: 50%;
-}
-
-@media screen and (max-width: 1024px) {
-  .tarjeta {
-    width: 75%;
-    margin: 0 0 0 0rem;
-  }
+  width: 75%;
 }
 
 .searchcard {
-  margin-bottom: 0;
+  transition: transform 0.2s;
 }
 
-@media screen and (max-width: 1024px) {
-  .searchcard {
-    margin-bottom: 7rem;
-    margin-left: -1rem;
-  }
+.searchcard:hover {
+  transform: scale(1.25);
 }
 
 .barrabusqueda {
@@ -69,40 +48,109 @@ pagination-controls {
   .barrabusqueda {
     padding: 0;
   }
-}
-
-@media screen and (max-width: 1024px) {
-  .tabla-alfabeto {
-    margin-left: 0;
+  .searchcard {
+    margin-bottom: 7rem;
+    margin-left: -1rem;
   }
-}
-
-@media screen and (max-width: 1024px) {
+  .tarjeta {
+    width: 75%;
+  }
   .cartabusqueda {
     margin-left: 1.25rem;
   }
+  input {
+    width: 100%;
+  }
+  table {
+    margin-top: 0;
+  }
 }
 
-.imagen1 {
+.contenedor-imagen1 {
   width: 25%;
   text-align: end;
 }
 
-@media screen and (max-width: 1024px) {
-  .imagen1 {
-    width: 50%;
-    text-align: end;
-  }
+.contenedor-imagen1 img {
+  width: 25%;
 }
 
-.imagen2 {
+.contenedor-imagen2 {
   width: 35%;
   text-align: start;
 }
 
+.contenedor-imagen2 img {
+  width: 35%;
+}
+
 @media screen and (max-width: 1024px) {
-  .imagen2 {
+  .contenedor-imagen1 {
+    width: 50%;
+    text-align: end;
+  }
+  .contenedor-imagen1 img {
+    width: 53%;
+    text-align: start;
+  }
+  .contenedor-imagen2 {
     width: 50%;
     text-align: start;
+  }
+  .contenedor-imagen2 img {
+    width: 70%;
+    text-align: start;
+  }
+}
+
+input {
+  width: 70%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+table {
+  margin-top: 5rem;
+}
+.carta-zoom {
+  transition: transform 0.2s;
+}
+
+.carta-zoom:hover {
+  transform: scale(1.25);
+}
+
+.mat-table {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.mat-paginator {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.avatar1 {
+  animation: float 6s ease-in-out infinite;
+}
+
+.avatar2 {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    box-shadow: none;
+    transform: translatey(0px);
+  }
+  50% {
+    box-shadow: none;
+    transform: translatey(-20px);
+  }
+  100% {
+    box-shadow: none;
+    transform: translatey(0px);
   }
 }
