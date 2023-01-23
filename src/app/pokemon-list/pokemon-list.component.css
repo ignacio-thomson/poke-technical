@@ -37,7 +37,7 @@ pagination-controls {
 }
 
 .searchcard:hover {
-  transform: scale(1.25);
+  transform: scale(1.05);
 }
 
 .carta-zoom {
@@ -45,7 +45,7 @@ pagination-controls {
 }
 
 .carta-zoom:hover {
-  transform: scale(1.25);
+  transform: scale(1.05);
 }
 
 .barrabusqueda {
