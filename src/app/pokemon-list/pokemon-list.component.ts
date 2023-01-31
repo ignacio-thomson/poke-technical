@@ -6,6 +6,8 @@ import { map, startWith } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { CanvasJSChart } from 'src/assets/canvasjs.angular.component';
+import { Chart, registerables } from 'chart.js/auto';
 
 export interface PokemonData {
   name: string,
@@ -26,8 +28,8 @@ export class PokemonListComponent implements OnInit {
   // Pokemon Alphabet Sorted Map
   sortedMap: any = {};
   // Charts
-  chart: any = "";
-  chartByName: any = "";
+  chart: any = '';
+  chartByName: any = '';
   selectedPokemon: any;
   // Search bar suggestions
   myControl = new FormControl();
@@ -40,6 +42,7 @@ export class PokemonListComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   poke: any;
   pokes: PokemonData[] = [];
+  optionClicked: boolean = false;
 
   constructor(public dataService: DataService) { 
     this.dataService.getAllPokemons().subscribe((data: any) => {
@@ -63,6 +66,7 @@ export class PokemonListComponent implements OnInit {
         });
       });
     });
+    Chart.register(...registerables);
   }
 
   ngOnInit(): void {
@@ -118,58 +122,82 @@ export class PokemonListComponent implements OnInit {
     });
   }
 
+  updateChart(chart: Chart){
+    if(chart){
+      chart.destroy();
+    }
+    chart.render();
+  }
+
   getPokemonByName(name: string) {
     this.dataService.getPokemonByName(name.toLowerCase()).subscribe((res: any) => {
       this.pokemonByName = res;
-      this.chartByName = {
-        animationsEnabled: true,
-        theme: "light1",
-        title: {
-            text: "Statistics",
-            fontFamily: "tahoma",
+      this.chartByName = new Chart("myChart", {
+        type: 'radar',
+        data: {
+          labels: ['HP', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed'],
+          datasets: [
+            {
+              label: 'Stats',
+              data: [res.stats[0].base_stat, res.stats[1].base_stat, res.stats[2].base_stat, res.stats[3].base_stat, res.stats[4].base_stat, res.stats[5].base_stat],
+              fill: true,
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.8)',
+              ],
+              borderColor: [
+                'rgb(75, 192, 192)',
+              ],
+              borderWidth: 1,
+              pointBackgroundColor: 'rgb(255, 99, 132)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgb(255, 99, 132)',
+              pointHitRadius: 25,
+              pointBorderWidth: 2,
+              pointHoverRadius: 4,
+              pointRadius: 3
+            }
+          ] 
         },
-        axisY: {
-          title: "Stats",
-        },
-        axisX: {
-          title: "Names"
-        },
-        data: [{
-            type: "column",
-            dataPoints: [
-                { label: "HP", y: res.stats[0].base_stat },
-                { label: "Attack", y: res.stats[1].base_stat },
-                { label: "Defense", y: res.stats[2].base_stat },
-                { label: "Sp. Attack", y: res.stats[3].base_stat },
-                { label: "Sp. Defense", y: res.stats[4].base_stat },
-                { label: "Speed", y: res.stats[5].base_stat }
-            ]
-        }]
-      };
+        options: {
+          maintainAspectRatio: true
+        }
+      });
     });
   }
 
   seeMore(name: string) {
     this.dataService.getMoreData(name).subscribe((res: any) => {
       this.pokemon = res;
-      this.chart = {
-        animationsEnabled: true,
-        title: {
-            text: "Statistics",
-            fontFamily: "tahoma",
+      this.chart = new Chart("myChart2", {
+        type: 'doughnut',
+        data: {
+          labels: ['HP', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed'],
+          datasets: [
+            {
+              label: 'Statistics',
+              data: [res.stats[0].base_stat, res.stats[1].base_stat, res.stats[2].base_stat, res.stats[3].base_stat, res.stats[4].base_stat, res.stats[5].base_stat],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(255, 159, 64, 0.8)',
+                'rgba(255, 205, 86, 0.8)',
+                'rgba(75, 192, 192, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(153, 102, 255, 0.8)',
+              ],
+              borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+              ],
+              borderWidth: 1
+            }
+          ] 
         },
-        data: [{
-            type: "pie",
-            dataPoints: [
-                { label: "HP", y: res.stats[0].base_stat },
-                { label: "Attack", y: res.stats[1].base_stat },
-                { label: "Defense", y: res.stats[2].base_stat },
-                { label: "Sp. Attack", y: res.stats[3].base_stat },
-                { label: "Sp. Defense", y: res.stats[4].base_stat },
-                { label: "Speed", y: res.stats[5].base_stat }
-            ]
-        }]
-      };
+      });
     });
   }
 }
