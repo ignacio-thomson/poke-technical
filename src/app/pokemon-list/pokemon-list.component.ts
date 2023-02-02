@@ -6,7 +6,6 @@ import { map, startWith } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { CanvasJSChart } from 'src/assets/canvasjs.angular.component';
 import { Chart, registerables } from 'chart.js/auto';
 
 export interface PokemonData {
@@ -42,7 +41,6 @@ export class PokemonListComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   poke: any;
   pokes: PokemonData[] = [];
-  optionClicked: boolean = false;
 
   constructor(public dataService: DataService) { 
     this.dataService.getAllPokemons().subscribe((data: any) => {
